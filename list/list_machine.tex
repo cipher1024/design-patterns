@@ -1,0 +1,82 @@
+\documentclass[10pt]{report}
+\usepackage[top=3cm, bottom=2.5cm, left=3cm, right=2.5cm] {geometry}
+\geometry{letterpaper}                   % ... or a4paper or a5paper or ... 
+%\geometry{landscape}                % Activate for for rotated page geometry
+%\usepackage[parfill]{parskip}    % Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{epstopdf}
+
+	% NOTE: It seems strategic to set the proofs repository as a submodule of any repository making
+	% 	use of it.  For articles `some_article' and `other_article' it seems sensible to put the directories
+	%	`some_article', `other_article' and `packages' (which contains proofs as a submodule) side by
+	%	side.
+	% (END OF NOTE)
+\usepackage{../packages/bsymb}
+\usepackage{../packages/b2latex}
+\usepackage{../packages/elogic}
+\usepackage{fancyhdr,lastpage,color}
+
+\DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
+
+\title{Brief Article}
+\author{The Author}
+%\date{}                                           % Activate to display a given date or no date
+\pagestyle{fancy}
+\begin{document}
+\maketitle
+%\section{}
+%\subsection{}
+\thispagestyle{empty}
+
+\begin{description}
+
+\BTitle{List}{7 Apr 2009}{05:29:42 PM}
+\MACHINE{LIST [G]}
+\TYPES
+	\begin{description}
+		\Item{POS}
+	\end{description}
+\CONSTANTS
+	\begin{description}
+		\var{before, after}{POS}
+	\end{description}
+\AXIOMS
+	\begin{description}
+		\nItem{axm0}{\iter{\exists}{s}{}{\neg finite.s}}
+		\nItem{axm1}{\neg before = after}
+	\end{description}
+\VARIABLES
+	\begin{description}
+		\var{ items}{POS \pfun G}
+		\var{pos}{seq (POS)}
+		\var{free}{set (POS)}
+	\end{description}
+\INVARIANTS
+	\begin{description}
+		\nItem{notafter}{ \neg before \in \dom.items }
+		\nItem{notbefore}{ \neg after \in \dom.items }
+		\nItem{posran}{ ran.pos = dom.items }
+		\nItem{posinj}{\iter{\forall}{i,j}{0 \leq i < \# pos \ \land \ 0 \leq j < \# pos \ \land \ pos.i = pos.j}{i = j}}
+		\nItem{nfinfree}{\neg finite.free}
+		\nItem{notfree}{(dom.items \bunion \{ after, before \}) \binter free = \emptyset}
+	\end{description}	
+\VARIABLES
+	\begin{description}
+		\var{ cursors}{bag (POS)}
+	\end{description}
+\INVARIANTS
+	\begin{description}
+		\nItem{nofreecurs}{ \iter{\forall}{p}{p \in free}{ cursors.p = 0 } }
+	\end{description}	
+\DUMMIES
+	\begin{description}
+		\var{p}{POS}
+		\var{i,j}{\nat}
+		\var{s}{set(POS)}
+	\end{description}
+\END
+
+\end{description}
+
+\end{document}  

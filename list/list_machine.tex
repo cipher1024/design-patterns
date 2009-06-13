@@ -29,23 +29,59 @@
 %\subsection{}
 \thispagestyle{empty}
 
-\begin{description}
+%\begin{description}
 
-\BTitle{List}{7 Apr 2009}{05:29:42 PM}
+%\BTitle{List}{7 Apr 2009}{05:29:42 PM}
+
+The first step is to define the operations of interest on a list without considering the possibility to have cursors.
+
+\MACHINE{LIST\_0 [G]}
+\VARIABLES
+	\var{items}{seq(G)}
+\DEFINITIONS
+	\DEF{n}{\#items}
+\EVENTS
+	\INIT
+		\BeginAct
+			\Item{ items := \epsilon }
+		\EndAct
+	\EVT{insert}
+		\AnyPrm
+			\var{i}{\nat}
+			\var{v}{G}
+		\WhereGrd
+			\nItem{ G1 }{ \interval{i}{0}{n+1} }
+		\ThenAct
+			\Item{ items := (items \uparrow i) \cat v \prepend (items \downarrow i) }
+		\EndAct 
+	\EVT{remove}
+		\AnyPrm
+			\var{i}{\nat}
+		\WhereGrd
+			\nItem{ G1 }{ \interval{i}{0}{n} }
+		\ThenAct
+			\Item{ items := (items \uparrow i) \cat  (items \downarrow (i + 1)) }
+		\EndAct 
+	\EVT{swap}
+		\AnyPrm
+			\var{i,j}{\nat}
+		\WhereGrd
+			\nItem{ G1 }{ \interval{i}{0}{n} }
+			\nItem{ G2 }{ \interval{j}{0}{n} }
+		\ThenAct
+			\Item{ items := ((items; i : items.j); j : items.i) }
+%		(items \uparrow i) + v \rightarrow (items \downarrow i) }
+		\EndAct 
+\END
+
 \MACHINE{LIST [G]}
 \TYPES
-	\begin{description}
 		\Item{POS}
-	\end{description}
 \CONSTANTS
-	\begin{description}
 		\var{before, after}{POS}
-	\end{description}
 \AXIOMS
-	\begin{description}
 		\nItem{axm0}{\iter{\exists}{s}{}{\neg finite.s}}
 		\nItem{axm1}{\neg before = after}
-	\end{description}
 \VARIABLES
 		\var{ items}{POS \pfun G}
 		\var{pos}{seq (POS)}
@@ -65,17 +101,17 @@
 		\var{p}{POS}
 		\var{i,j}{\nat}
 		\var{s}{set(POS)}
-\INITIALISATION
-	\BeginAct
-		\Item{  items := \emptyset  }
-	\EndAct
 \EVENTS
+	\INIT
+		\BeginAct
+			\Item{ a+b  } %items := \emptyset  }
+		\EndAct
 	\EVT{insert}
 		\BeginAct
 			\Item a + b
 		\EndAct
 \END
 
-\end{description}
+%\end{description}
 
 \end{document}  
